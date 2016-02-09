@@ -1,0 +1,10 @@
+{
+  "name": "RestaurantWebappSockets",
+  "version": "0.0.0",
+  "dependencies": {
+    "amqplib": "^0.4.1",
+    "http": "0.0.0",
+    "socket.io": "^1.4.5",
+    "underscore": "^1.8.3"
+  }
+}

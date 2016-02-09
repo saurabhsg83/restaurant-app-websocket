@@ -1,0 +1,5 @@
+{
+  "RabbitMqServerHost":"//localhost",
+  "NodeServerPort": "8080",
+  "RabbitMqServerPort": "5672"
+}

@@ -1,25 +1,19 @@
-var http = require('http');
-var amqp = require('amqplib/callback_api');
-//Lets define a port we want to listen to
-
-var server = http.createServer(handleRequest);
-var io = require('socket.io')(server);
-
-var x;
-const PORT=8081;
+var http = require('http'),
+amqp = require('amqplib/callback_api');
+server = http.createServer(handleRequest);
+io = require('socket.io')(server);
+CONFIG = require('./server_commons/config.js');
+const PORT = CONFIG.NodeServerPort;
 
 //We need a function which handles requests and send response
 function handleRequest(request, response){
-    response.end('It Works!! Path Hit: ' + request.url);
+  response.end('It Works!! Path Hit: ' + request.url);
 }
 
-
-//Create a server
-
-//Lets start our server
+//start server
 server.listen(PORT, function(){
-  //Callback triggered when server is successfully listening. Hurray!
-  console.log("Server listening on: http://localhost:%s", PORT);
+  //Callback triggered when server is successfully listening.
+  console.log("Server listening on", PORT);
 });
 
 function emitOrder(socket){
@@ -50,6 +44,6 @@ function onSocketConnection(socket){
     socket.join(data.user_id);
   })
 }
-
-amqp.connect('amqp://localhost', consumeHutch);
+console.log(CONFIG);
+amqp.connect(CONFIG.RabbitMqProtocol + ':' + CONFIG.RabbitMqServerHost + ':' + CONFIG.RabbitMqServerPort, consumeHutch);
 io.on('connection', onSocketConnection);
