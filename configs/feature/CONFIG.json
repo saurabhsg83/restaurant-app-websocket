@@ -1,0 +1,5 @@
+{
+  "RabbitMqServerHost":"//dev.tinyowl.com",
+  "NodeServerPort": "8080",
+  "RabbitMqServerPort": "5672"
+}

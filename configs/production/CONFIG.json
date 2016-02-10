@@ -1,5 +1,5 @@
 {
-  "RabbitMqServerHost": "//localhost",
+  "RabbitMqServerHost": "//52.74.133.58",
   "NodeServerPort": "8080",
-  "RabbitMqServerPort": "5672"
+  "RabbitMqServerPort": "4876"
 }
