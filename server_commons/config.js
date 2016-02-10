@@ -1,5 +1,6 @@
 var _ = require('underscore');
-var CONFIG = require('../configs/'+ process.argv[2] + '/CONFIG.json');
+var env = !!process.argv[2] ? process.argv[2] : 'development';
+var CONFIG = require('../configs/'+ env + '/CONFIG.json');
 module.exports =  (function (){
    var obj = {
     NodeServerPort: '',
