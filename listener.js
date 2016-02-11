@@ -46,5 +46,6 @@ function onSocketConnection(socket){
   })
 }
 console.log(CONFIG);
-amqp.connect(CONFIG.RabbitMqProtocol + ':' + CONFIG.RabbitMqServerHost + ':' + CONFIG.RabbitMqServerPort, consumeHutch);
+//amqp://user:pass@host:10000/vhost
+amqp.connect(CONFIG.RabbitMqProtocol + '://' + CONFIG.RabbitMqUsername + ':' + CONFIG.RabbitMqPassword + '@' + CONFIG.RabbitMqServerHost + ':' + CONFIG.RabbitMqServerPort, consumeHutch);
 io.on('connection', onSocketConnection);

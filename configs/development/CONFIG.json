@@ -1,5 +1,8 @@
 {
-  "RabbitMqServerHost":"//localhost",
+  "RabbitMqServerHost":"localhost",
+  "RabbitMqProtocol":"amqp",
   "NodeServerPort": "8080",
-  "RabbitMqServerPort": "5672"
+  "RabbitMqServerPort": "5672",
+  "RabbitMqUsername": "",
+  "RabbitMqPassword": ""
 }
