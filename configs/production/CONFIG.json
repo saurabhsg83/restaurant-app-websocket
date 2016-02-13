@@ -1,8 +1,0 @@
-{
-  "RabbitMqServerHost": "52.74.133.58",
-  "RabbitMqProtocol":"amqp",
-  "NodeServerPort": "8080",
-  "RabbitMqServerPort": "4876",
-  "RabbitMqUsername": "",
-  "RabbitMqPassword": ""
-}

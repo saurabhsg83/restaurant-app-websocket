@@ -43,7 +43,10 @@ function onSocketConnection(socket){
   socket.on('establish_connection', function (data){
     console.log(data.user_id)
     socket.join(data.user_id);
-  })
+  });
+  socket.on('disconnect', function () {
+    console.log('Socket disconnected')
+  });
 }
 console.log(CONFIG);
 //amqp://user:pass@host:10000/vhost

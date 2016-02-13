@@ -1,8 +1,0 @@
-{
-  "RabbitMqServerHost":"54.169.112.112",
-  "RabbitMqProtocol":"amqp",
-  "NodeServerPort": "8080",
-  "RabbitMqServerPort": "4876",
-  "RabbitMqUsername": "restaurants_websockets",
-  "RabbitMqPassword": "rabbit@1234"
-}
