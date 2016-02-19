@@ -32,6 +32,7 @@ function consumeHutch(err, conn) {
       ch.bindQueue(q.queue, ex, 'sockets.orders');
       ch.consume(q.queue, function(msg) {
         var object = JSON.parse(msg.content.toString());
+        console.log("New Order Arrived " + object.order_id);
         io.to(object.user_id).emit('order.new', object);
       }, {noAck: false});
     });
