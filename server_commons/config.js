@@ -1,5 +1,5 @@
 var _ = require('underscore');
-var env = !!process.argv[2] ? process.argv[2] : 'development';
+var env = process.argv.slice(-1).pop()
 var CONFIG = require('../configs/'+ env + '/CONFIG.json');
 module.exports =  (function (){
    var obj = {
