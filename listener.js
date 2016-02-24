@@ -1,20 +1,28 @@
 var http = require('http'),
-amqp = require('amqplib/callback_api');
-server = http.createServer(handleRequest);
-io = require('socket.io')(server);
+express = require('express'),
+amqp = require('amqplib/callback_api'),
+cors = require('cors'),
+//server = http.createServer(handleRequest);
 CONFIG = require('./server_commons/config.js');
 const PORT = CONFIG.NodeServerPort;
+var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
+app.use(cors);
 //We need a function which handles requests and send response
-function handleRequest(request, response){
-  response.end('It Works!! Path Hit: ' + request.url);
-}
+app.get('/', function (req, res) {
+  res.send('Websockets Node Server started!!!');
+});
 
-//start server
-server.listen(PORT, function(){
-  //Callback triggered when server is successfully listening.
+app.listen(PORT, function () {
   console.log("Server listening on", PORT);
 });
+//start server
+// server.listen(PORT, function(){
+//   //Callback triggered when server is successfully listening.
+//   console.log("Server listening on", PORT);
+// });
 
 function emitOrder(socket){
   return function(msg){
