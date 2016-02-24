@@ -8,10 +8,13 @@ const PORT = CONFIG.NodeServerPort;
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-
+var corsOptions = {
+  origin: '*',
+  methods: "GET, PUT, POST"
+};
 app.use(cors);
 //We need a function which handles requests and send response
-app.get('/', function (req, res) {
+app.get('/', cors(corsOptions), function (req, res) {
   res.send('Websockets Node Server started!!!');
 });
 
