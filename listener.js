@@ -63,7 +63,6 @@ function consumeHutch(err, conn) {
 
 
 function onSocketConnection(socket){
-  console.log("Getting a connection");
   socket.on('establish_connection', function (data){
     console.log("Connected restaurant's  user id: " + data.user_id)
     socket.join(data.user_id);
