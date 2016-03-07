@@ -2,26 +2,22 @@ var http = require('http'),
 express = require('express'),
 amqp = require('amqplib/callback_api'),
 cors = require('cors'),
-//server = http.createServer(handleRequest);
 CONFIG = require('./server_commons/config.js');
 const PORT = CONFIG.NodeServerPort;
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-var corsOptions = {
-  origin: '*',
-  methods: "GET, PUT, POST"
-};
+
 app.use(function (req, res, next) {
 
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', 'https://restaurants.tinyowl.com');
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
   // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
 
   // Set to true if you need the website to include cookies in the requests sent
   // to the API (e.g. in case you use sessions)
@@ -30,26 +26,23 @@ app.use(function (req, res, next) {
   // Pass to next layer of middleware
   next();
 });
+
+
 //We need a function which handles requests and send response
 app.get('/', function (req, res) {
   res.send('Websockets Node Server started!!!');
 });
 
-app.listen(PORT, function () {
-  console.log("Server listening on", PORT);
+ server.listen(PORT, function() {
+  //Callback triggered when server is successfully listening.
+  console.log("Server listening on ", PORT);
 });
-//start server
-// server.listen(PORT, function(){
-//   //Callback triggered when server is successfully listening.
-//   console.log("Server listening on", PORT);
-// });
 
 function emitOrder(socket){
   return function(msg){
     socket.emit('order.new', msg.content.toString());
   }
 }
-
 
 function consumeHutch(err, conn) {
   conn.createChannel(function(err, ch) {
@@ -60,8 +53,9 @@ function consumeHutch(err, conn) {
       ch.bindQueue(q.queue, ex, 'sockets.orders');
       ch.consume(q.queue, function(msg) {
         var object = JSON.parse(msg.content.toString());
-        console.log("New Order Arrived " + object.order_id);
+        console.log("New Order " + object.order_id + " is arrived for user_id: " + object.user_id);
         io.to(object.user_id).emit('order.new', object);
+        ch.ack(msg);
       }, {noAck: false});
     });
   });
@@ -69,15 +63,17 @@ function consumeHutch(err, conn) {
 
 
 function onSocketConnection(socket){
+  console.log("Getting a connection");
   socket.on('establish_connection', function (data){
-    console.log(data.user_id)
+    console.log("Connected restaurant's  user id: " + data.user_id)
     socket.join(data.user_id);
   });
   socket.on('disconnect', function () {
     console.log('Socket disconnected')
   });
+  return(true);
 }
 console.log(CONFIG);
-//amqp://user:pass@host:10000/vhost
+//FORMAT: "//amqp://user:pass@host:10000/vhost"
 amqp.connect(CONFIG.RabbitMqProtocol + '://' + CONFIG.RabbitMqUsername + ':' + CONFIG.RabbitMqPassword + '@' + CONFIG.RabbitMqServerHost + ':' + CONFIG.RabbitMqServerPort, consumeHutch);
 io.on('connection', onSocketConnection);
