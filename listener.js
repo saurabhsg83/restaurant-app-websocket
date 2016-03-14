@@ -38,12 +38,6 @@ app.get('/', function (req, res) {
   console.log("Server listening on ", PORT);
 });
 
-function emitOrder(socket){
-  return function(msg){
-    socket.emit('order.new', msg.content.toString());
-  }
-}
-
 function consumeHutch(err, conn) {
   conn.createChannel(function(err, ch) {
     var ex = 'hutch';
@@ -54,25 +48,26 @@ function consumeHutch(err, conn) {
       ch.consume(q.queue, function(msg) {
         var object = JSON.parse(msg.content.toString());
         console.log("New Order " + object.order_id + " is arrived for user_id: " + object.user_id);
-        io.to(object.user_id).emit('order.new', object);
+        io.sockets.emit('order.new', object);
         ch.ack(msg);
       }, {noAck: false});
     });
   });
 }
 
-
-function onSocketConnection(socket){
+function onSocketConnection(socket) {
   socket.on('establish_connection', function (data){
     console.log("Connected restaurant's  user id: " + data.user_id)
     socket.join(data.user_id);
   });
+
   socket.on('disconnect', function () {
-    console.log('Socket disconnected')
+    console.log('Socket disconnected');
   });
-  return(true);
 }
+
 console.log(CONFIG);
 //FORMAT: "//amqp://user:pass@host:10000/vhost"
+// amqp.connect("amqp://localhost:5672", consumeHutch); uncommnet while testing on localhost
 amqp.connect(CONFIG.RabbitMqProtocol + '://' + CONFIG.RabbitMqUsername + ':' + CONFIG.RabbitMqPassword + '@' + CONFIG.RabbitMqServerHost + ':' + CONFIG.RabbitMqServerPort, consumeHutch);
-io.on('connection', onSocketConnection);
+io.sockets.on('connection', onSocketConnection);
