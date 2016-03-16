@@ -72,4 +72,5 @@ console.log(CONFIG);
 //FORMAT: "//amqp://user:pass@host:10000/vhost"
 // amqp.connect("amqp://localhost:5672", consumeHutch); uncommnet while testing on localhost
 amqp.connect(CONFIG.RabbitMqProtocol + '://' + CONFIG.RabbitMqUsername + ':' + CONFIG.RabbitMqPassword + '@' + CONFIG.RabbitMqServerHost + ':' + CONFIG.RabbitMqServerPort, consumeHutch);
+io.set('transports', ['websocket']);
 io.sockets.on('connection', onSocketConnection);
