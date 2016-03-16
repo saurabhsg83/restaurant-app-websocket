@@ -64,6 +64,8 @@ function onSocketConnection(socket) {
   socket.on('disconnect', function () {
     console.log('Socket disconnected');
   });
+
+  return(true);
 }
 
 console.log(CONFIG);
