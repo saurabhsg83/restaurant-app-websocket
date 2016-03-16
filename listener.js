@@ -64,8 +64,6 @@ function onSocketConnection(socket) {
   socket.on('disconnect', function () {
     console.log('Socket disconnected');
   });
-
-  return(true);
 }
 
 console.log(CONFIG);
@@ -73,4 +71,4 @@ console.log(CONFIG);
 // amqp.connect("amqp://localhost:5672", consumeHutch); uncommnet while testing on localhost
 amqp.connect(CONFIG.RabbitMqProtocol + '://' + CONFIG.RabbitMqUsername + ':' + CONFIG.RabbitMqPassword + '@' + CONFIG.RabbitMqServerHost + ':' + CONFIG.RabbitMqServerPort, consumeHutch);
 io.set('transports', ['websocket']);
-io.sockets.on('connection', onSocketConnection);
+io.on('connection', onSocketConnection);
